@@ -1,0 +1,116 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor": "#5577ee",
+						"searchInput": {
+							"backgroundColor": "#fff",
+							"borderRadius": "6px",
+							"placeholder": "请输入搜索内容",
+							"disabled": true
+						}
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/search_detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"app-plus": {
+					"titleNView": {
+						"backgroundColor": "#5577ee",
+						"searchInput": {
+							"backgroundColor": "#fff",
+							"borderRadius": "6px",
+							"placeholder": "请输入搜索内容",
+							"autoFocus": true
+						}
+					}
+				}
+			}
+		},
+	    {
+            "path" : "pages/course",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的课程",
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#fff",
+						"backgroundColor": "#5577ee"
+					}
+				}
+            }
+            
+        },
+		{
+		    "path" : "pages/user",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "个人中心",
+		        "app-plus": {
+		        	"titleNView": {
+		        		"titleColor": "#fff",
+		        		"backgroundColor": "#5577ee"
+		        	}
+		        }
+		    }
+		    
+		}
+        ,{
+            "path" : "components/CourseData",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": ""
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"condition" : { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "", //模式名称
+				"path": "", //启动页面，必选
+				"query": "" //启动参数，在页面的onLoad函数里面得到
+			}
+		]
+	},
+	"tabBar": {
+		"color" : "#707070",
+		"selectedColor" : "#5577ee",
+		"borderStyle" : "black",
+		"backgroundColor" : "#F8F8F8",
+		"list":[
+			{
+			    "pagePath" : "pages/index",
+			    "iconPath" : "static/img/home.png",
+			    "selectedIconPath" : "static/img/home_select.png",
+			    "text" : "首页"
+			},
+			{
+			    "pagePath" : "pages/course",
+			    "iconPath" : "static/img/course.png",
+			    "selectedIconPath" : "static/img/course_select.png",
+			    "text" : "课程"
+			},
+			{
+			    "pagePath" : "pages/user",
+			    "iconPath" : "static/img/user.png",
+			    "selectedIconPath" : "static/img/user_select.png",
+			    "text" : "我的"
+			}
+		]
+	}
+}

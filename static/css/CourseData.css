@@ -1,0 +1,98 @@
+.course_bg{
+	background-color: #fff;
+	height:auto;
+	border-radius: 25rpx;
+}
+.course{
+	/* overflow: auto; */
+	height:145rpx;
+	width:660rpx;
+	padding: 25rpx 0;
+	margin:0 20rpx 10rpx 20rpx;
+	
+}
+.border{
+	border-bottom: 0.5rpx #ccc solid;
+}
+.cour_L{
+	float: left;
+	height:135rpx;
+	width:240rpx;
+	border-radius: 15rpx;
+}
+.cour_img{
+	height:135rpx;
+	width:240rpx;
+	border-radius: 15rpx;
+	object-fit: cover;
+}
+.cour_R{
+	float: right;
+	height:135rpx;
+	width:370rpx;
+	padding-right: 10rpx;
+}
+.cour_title{
+	font-size: 16px;
+	color: #000000;
+	height: 55rpx;
+	line-height: 55rpx;
+	width: 370rpx;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.cour_source{
+	font-size: 10px;
+	color: #666666;
+	height: 40rpx;
+	line-height: 40rpx;
+	width: 370rpx;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.cour_source span{
+	font-size: 10px;
+	color: #666666;
+	height: 40rpx;
+	line-height: 40rpx;
+	width: 370rpx;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.cour_source span::before{
+	padding-right: 5rpx;
+}
+.cour_info{
+	margin-top: 8rpx;
+	font-size: 10px;
+	color: #666666;
+	height: 32rpx;
+	line-height: 32rpx;
+	width: 370rpx;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.cour_name::before{
+	padding-right: 5rpx;
+}
+.cour_info span{
+	display: inline-block;
+	font-size: 10px;
+	padding-right: 10rpx;
+	color: #666666;
+	height: 32rpx;
+	line-height: 32rpx;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden
+}
+.cour_time{
+	float: right;
+}
+.cour_time::before{
+	padding-right: 5rpx;
+}
