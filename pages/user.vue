@@ -55,6 +55,9 @@ export default {
 		methods: {
 			gotoLoginPage(){
 				console.log("跳转到登录界面")
+				uni.navigateTo({
+					url:"login"
+				})
 			}
 		}
 	}
