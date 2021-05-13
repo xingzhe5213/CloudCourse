@@ -17,16 +17,16 @@ export const requestData=(options)=>{ //传入的options是一个json对象
 			dataType:options.dataType || "json",
 			success: (res) => {
 				// console.log(res)
-				if(res.data.code !== 200){
+				if(res.statusCode !== 200){
 					return uni.showToast({
-						title:"获取数据失败"
+						title:"系统异常！"
 					})
 				}
 				resolve(res)
 			},
 			fail: (err) => {
 				uni.showToast({
-					title:"获取数据失败"
+					title:"系统异常！"
 				})
 				reject(err)
 			}
