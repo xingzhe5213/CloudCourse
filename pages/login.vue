@@ -8,12 +8,12 @@
 				欢迎使用云课堂
 			</view>
 		</view>
-		<view class="login-view">
+		<view class="login-view" style="display: none;">
 			<view class="t-login">
 				<form class="cl">
 					<view class="t-a">
 						<text class="txt">用户名</text>
-						<input type="text" name="phone" placeholder="请输入您的用户名" maxlength="11" v-model="user" />
+						<input type="text" name="user" placeholder="请输入您的用户名" maxlength="11" v-model="user" />
 					</view>
 					<view class="t-a">
 						<text class="txt">密码</text>
@@ -21,6 +21,39 @@
 					</view>
 					<button @tap="login()">登 录</button>
 					<view class="reg" @tap="reg()">注 册</view>
+				</form>
+			</view>
+		</view>
+		
+		<view class="login-view">
+			<view class="t-login">
+				<form class="cl">
+					<view class="t-a">
+						<text class="txt">用户名</text>
+						<input type="text" name="user" placeholder="请输入您的用户名" maxlength="11" v-model="user" />
+					</view>
+					<view class="t-a">
+						<text class="txt">密码</text>
+						<input type="password" name="code" maxlength="18" placeholder="请输入您的密码" v-model="pwd" />
+					</view>
+					<view class="t-a">
+						<text class="txt">手机</text>
+						<input type="text" name="phone" maxlength="18" placeholder="请输入您的手机" v-model="phone" />
+					</view>
+					<view class="t-a">
+						<text class="txt">邮箱地址</text>
+						<input type="text" name="email" maxlength="18" placeholder="请输入您的邮箱地址" v-model="email" />
+					</view>
+	
+					<view class="t-a">
+						<text class="txt">是否教师</text>
+						<radio-group name="lecturer">
+							<radio name="lecturer" v-model="lecturer">是</radio>
+							<radio name="lecturer" v-model="lecturer">否</radio>
+						</radio-group>
+
+					</view>
+					<button class="reg" @tap="reg()">注 册</button>
 				</form>
 			</view>
 		</view>
@@ -73,7 +106,21 @@ export default {
 		//注册按钮点击
 		reg() {
 			uni.showToast({ title: '注册跳转', icon: 'none' });
+			setText();
 		},
+		setText() {
+			this.hasSetText = !this.hasSetText;
+			uni.setNavigationBarTitle({
+				title: this.hasSetText ? "Hello uni-app" : "默认导航栏"
+			})
+		},
+		setBg() {
+			this.hasSetBg = !this.hasSetBg;
+			uni.setNavigationBarColor({
+				frontColor: this.hasSetBg ?  "#000000" : "#ffffff",
+				backgroundColor: this.hasSetBg ? "#F8F8F8" : "#007AFF"
+			})
+		}
 	}
 };
 </script>
@@ -86,7 +133,7 @@ export default {
 .img-a {
 	width: 100%;
 	height: 450rpx;
-	background-color:#07f;
+	background-color:#57e;
 	background-size: 100%;
 }
 .reg {
@@ -119,7 +166,7 @@ export default {
 
 .t-login button {
 	font-size: 28rpx;
-	background: #2796f2;
+	background: #57e;
 	color: #fff;
 	height: 90rpx;
 	line-height: 90rpx;

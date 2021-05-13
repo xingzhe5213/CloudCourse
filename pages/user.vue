@@ -46,18 +46,22 @@ export default {
 				if(res.data.code === 200){
 					this.data=res.data.data;
 					this.code=res.data.code;
-					console.log(res.data.data)
+					if(res.data.code===200){
+						this.isLogin=true;
+					}else{
+						this.isLogin=false;
+					}
 				}
-				
-				console.log(res);
 			});
 		},
 		methods: {
 			gotoLoginPage(){
-				console.log("跳转到登录界面")
-				uni.navigateTo({
-					url:"login"
-				})
+				if(this.isLogin===false){
+					uni.navigateTo({
+						url:"login"
+					})
+				}
+				console.log(this.isLogin)
 			}
 		}
 	}
