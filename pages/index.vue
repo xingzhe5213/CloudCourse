@@ -1,7 +1,6 @@
 <template>
 	<view class="uni-margin-wrap">
 		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-			
 			<swiper-item v-for="item in sliderData" :key="item.courseId">
 				<view class="swiper-item">
 					<image v-if="!item.courseSource" class="swiper_image" mode="aspectFill" :src="$imgPath+item.courseImg"></image>
@@ -12,9 +11,7 @@
 					<p class="swiper_course iconfont iconcaidan" v-if="item.courseSource">{{item.courseSource}}</p>
 				</view>
 			</swiper-item>
-			
 		</swiper>
-		
 		<view class="course_class">
 			<view>
 				<p class="iconfont iconyanjiusheng"></p>
@@ -33,18 +30,11 @@
 				<span>更多</span>
 			</view>
 		</view>
-		
-		<p class="courseTitle">推荐课程<span class="courseMore">更多 >></span></p>
+		<p class="courseTitle" v-if="courseData.length>0">推荐课程<span class="courseMore">更多 >></span></p>
 		<CourseData :DataList='courseData'></CourseData>
-		
-		<p class="courseTitle">直播课程<span class="courseMore">更多 >></span></p>
+		<p class="courseTitle" v-if="liveData.length>0">直播课程<span class="courseMore">更多 >></span></p>
 		<CourseData :DataList='liveData'></CourseData>
-		
 	</view>
-	
-	
-	
-	
 </template>
 
 <script>
@@ -53,11 +43,6 @@
 		components: {
 		    // 注册自定义组件 
 			CourseData
-		},
-		filters: {
-			filterDate(cellValue,format) {
-				return cellValue ? moment(cellValue).format(format): '';
-			}
 		},
 		data() {
 			return {
@@ -106,7 +91,8 @@
 			}).then((res) => {
 				if(res.data.code === 200){
 					_this.courseData=res.data.data.list;
-					console.log(_this.courseData);
+					
+					console.log(res.data.data.count);
 				}
 			});
 			
@@ -121,9 +107,6 @@
 			}).then((res) => {
 				if(res.data.code === 200){
 					_this.liveData=res.data.data.list;
-					
-					
-					console.log(_this.liveData);
 				}
 			});
 			
