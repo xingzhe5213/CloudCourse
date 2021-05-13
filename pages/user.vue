@@ -24,7 +24,7 @@
     	</view>
 
 		<view class="sys-exit-box">
-			<button class="btn_exit">
+			<button class="btn_exit" @click="logout()">
 				退出登录
 			</button>
 		</view>
@@ -34,11 +34,14 @@
 export default {
 		data() {
 			return {
-				data:{}
+				data:"",
+				isLogin:false,
+				code:0
 			};
 		},
 		onLoad() {
 			let _this = this;
+			
 			_this.$requestData({
 				url:'/auth/info',
 				data:{}
@@ -59,9 +62,17 @@ export default {
 				if(this.isLogin===false){
 					uni.navigateTo({
 						url:"login"
-					})
+					});
 				}
-				console.log(this.isLogin)
+			},
+			logout(){
+				if(this.isLogin==true){
+					uni.removeStorageSync("token");
+					//关闭所有页面打开个人中心
+					uni.reLaunch({
+						url:"user"
+					});
+				}
 			}
 		}
 	}

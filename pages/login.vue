@@ -8,7 +8,7 @@
 				欢迎使用云课堂
 			</view>
 		</view>
-		<view class="login-view" style="display: none;">
+		<view class="login-view">
 			<view class="t-login">
 				<form class="cl">
 					<view class="t-a">
@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		
-		<view class="login-view">
+		<view class="login-view" style="display: none;">
 			<view class="t-login">
 				<form class="cl">
 					<view class="t-a">
@@ -96,30 +96,20 @@ export default {
 				if(res.data.code === 200){
 					this.data=res.data.data;
 					this.code=res.data.code;
-					console.log(res.data.data)
+					uni.setStorageSync("token",this.data.token);
+					//关闭所有页面重新打开个人中心
+					uni.reLaunch({
+						url:"user"
+					});
+				}else{
+					
 				}
-				
-				console.log(res);
 			});
 			
 		},
 		//注册按钮点击
 		reg() {
 			uni.showToast({ title: '注册跳转', icon: 'none' });
-			setText();
-		},
-		setText() {
-			this.hasSetText = !this.hasSetText;
-			uni.setNavigationBarTitle({
-				title: this.hasSetText ? "Hello uni-app" : "默认导航栏"
-			})
-		},
-		setBg() {
-			this.hasSetBg = !this.hasSetBg;
-			uni.setNavigationBarColor({
-				frontColor: this.hasSetBg ?  "#000000" : "#ffffff",
-				backgroundColor: this.hasSetBg ? "#F8F8F8" : "#007AFF"
-			})
 		}
 	}
 };
