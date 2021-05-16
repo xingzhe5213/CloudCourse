@@ -45,8 +45,8 @@
 			* 搜索
 			*/
 			search(val) {
-				uni.reLaunch({
-					url: 'user?title='+val+'&name=1',
+				uni.navigateTo({
+					url: 'CourseList?title='+val+'&search=1',
 				})
 				util.setHistory(val);
 			},
@@ -76,9 +76,7 @@
 					}
 				}).then((res) => {
 					if(res.data.code === 200){
-						console.log(res.data)
 						_this.dataList=res.data.data.list;
-						console.log(this.dataList)
 					}
 				});
 			}

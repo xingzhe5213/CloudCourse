@@ -77,10 +77,44 @@
 		    
 		}
         ,{
-            "path" : "components/CourseData",
+            "path" : "components/CourseData"
+    //         "style" :                                                                                    
+    //         {
+    //             // "navigationBarTitleText": "",
+				// "app-plus": {
+				// 	"titleNView": {
+				// 		"titleColor": "#fff",
+				// 		"backgroundColor": "#5577ee"
+				// 	}
+				// }
+    //         }
+            
+        }
+        ,{
+            "path" : "pages/CourseDetails",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": ""
+                "navigationBarTitleText": "课程详情",
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#fff",
+						"backgroundColor": "#5577ee"
+					}
+				}
+            }
+            
+        }
+        ,{
+            "path" : "pages/CourseList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "课程",
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#fff",
+						"backgroundColor": "#5577ee"
+					}
+				}
             }
             
         }
@@ -96,7 +130,7 @@
 		"list": [
 			{
 				"name": "", //模式名称
-				"path": "", //启动页面，必选
+				"path": "pages/CourseDetails", //启动页面，必选
 				"query": "" //启动参数，在页面的onLoad函数里面得到
 			}
 		]

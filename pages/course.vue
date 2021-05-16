@@ -1,18 +1,19 @@
 <template>
 	<view class="uni-margin-wrap">
-		<p class="courseNone" v-if="courseData.length==0&&liveCourse.length==0">未参加任何课程</p>
+		<p class="courseNone" v-if="login&&courseData.length==0&&liveCourse.length==0">未参加任何课程</p>
+		<p class="courseNone" v-if="!login">未登录</p>
+		
 		<view  v-if="courseData.length>0">
 			<p class="courseTitle">课程</p>
 			<CourseData :DataList='courseData'></CourseData>
-			<view v-if="CouCount!=Couindex" @click="getCou(Couindex+5)">加载更多</view>
+			<view class="courMore" v-if="CouCount!=Couindex" @click="getCou(Couindex+5)">加载更多</view>
 		</view>
 		
 		<view v-if="liveCourse.length>0">
 			<p class="courseTitle">直播</p>
 			<CourseData :DataList='liveCourse'></CourseData>
-			<view v-if="LivCount!=Livindex" @click="getLiv(Livindex+5)">加载更多</view>
+			<view class="courMore" v-if="LivCount!=Livindex" @click="getLiv(Livindex+5)">加载更多</view>
 		</view>
-
 	</view>
 </template>
 
@@ -31,7 +32,8 @@
 				Couindex:"",
 				liveCourse:"",
 				LivCount:5,
-				Livindex:""
+				Livindex:"",
+				login:true
 			}
 		},
 		onLoad() {
@@ -44,9 +46,6 @@
 			*/
 			getCouDataList(index){
 				let _this = this;
-				if(index>_this.CouCount){
-					index=_this.CouCount;
-				}
 				_this.$requestData({
 					url:'/ca/getOpt',
 					data:{
@@ -56,9 +55,13 @@
 					}
 				}).then((res) => {
 					if(res.data.code === 200){
+						console.log(res)
 						_this.CouCount=res.data.data.count;
-						_this.Couindex=res.data.data.pageSize;
+						_this.Couindex=res.data.data.list.length;
 						_this.courseData=res.data.data.list;
+					}
+					if(res.statusCode==403){
+						_this.login=false;
 					}
 				});
 			},
@@ -67,9 +70,6 @@
 			*/
 			getLivDataList(index){
 				let _this = this;
-				if(index>_this.LivCount){
-					index=_this.LivCount;
-				}
 				_this.$requestData({
 					url:'/ca/getOpt',
 					data:{
@@ -80,8 +80,11 @@
 				}).then((res) => {
 					if(res.data.code === 200){
 						_this.LivCount=res.data.data.count;
-						_this.Livindex=res.data.data.pageSize;
+						_this.Livindex=res.data.data.list.length;
 						_this.liveCourse=res.data.data.list;
+					}
+					if(res.statusCode==403){
+						_this.login=false;
 					}
 				});
 			},

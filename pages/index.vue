@@ -13,26 +13,26 @@
 			</swiper-item>
 		</swiper>
 		<view class="course_class">
-			<view>
+			<view @click="more('考研')">
 				<p class="iconfont iconyanjiusheng"></p>
 				<span>考研</span>
 			</view>
-			<view>
+			<view @click="more('计算机')">
 				<p class="iconfont iconruanjian"></p>
 				<span>计算机</span>
 			</view>
-			<view>
+			<view @click="more('四六级')">
 				<p class="iconfont iconyingyu"></p>
 				<span>四六级</span>
 			</view>
-			<view>
+			<view @click="more('')">
 				<p class="iconfont icongengduo"></p>
 				<span>更多</span>
 			</view>
 		</view>
-		<p class="courseTitle" v-if="courseData.length>0">推荐课程<span class="courseMore">更多 >></span></p>
+		<p class="courseTitle" v-if="courseData.length>0">推荐课程<span class="courseMore" @click="more('')">更多 >></span></p>
 		<CourseData :DataList='courseData'></CourseData>
-		<p class="courseTitle" v-if="liveData.length>0">直播课程<span class="courseMore">更多 >></span></p>
+		<p class="courseTitle" v-if="liveData.length>0">直播课程<span class="courseMore" @click="more('')">更多 >></span></p>
 		<CourseData :DataList='liveData'></CourseData>
 	</view>
 </template>
@@ -76,7 +76,6 @@
 			}).then((res) => {
 				if(res.data.code === 200){
 					_this.sliderData=res.data.data.list;
-					console.log(_this.sliderData);
 				}
 			});
 			
@@ -91,8 +90,6 @@
 			}).then((res) => {
 				if(res.data.code === 200){
 					_this.courseData=res.data.data.list;
-					
-					console.log(res.data.data.count);
 				}
 			});
 			
@@ -112,7 +109,11 @@
 			
 		},
 		methods: {
-			
+			more(val){
+				uni.navigateTo({
+					url: 'CourseList?title='+val+'&search=0',
+				})
+			}
 		}
 	}
 </script>
