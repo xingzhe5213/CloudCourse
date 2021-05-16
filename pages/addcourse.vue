@@ -30,13 +30,15 @@
 					</view>
 					<view class="t-a">
 						<text class="txt">课程封面</text>
+
 						<view class="imguploader">
-							<view class="img_view">
-								<image class="img_preview" :src="image" :data-src="image" @tap="previewImage"></image>
+							<view v-if="!image" class="iconfont icontianjia" @tap="chooseImg"></view>
+							<view v-else class="img_view">
+								<image class="img_preview" :src="image" :data-src="image"  @tap="chooseImg" ></image>
 							</view>
 						</view>
 					</view>
-					<button class="reg" @tap="reg()">创建课程</button>
+					<button class="reg" @click="checkForm">创建课程</button>
 				</form>
 			</view>
 		</view>
@@ -44,16 +46,6 @@
 </template>
 <script>
 	import permision from "@/common/permission.js"
-	var sourceType = [
-		['camera'],
-		['album'],
-		['camera', 'album']
-	]
-	var sizeType = [
-		['compressed'],
-		['original'],
-		['compressed', 'original']
-	]
 	export default {
 		data() {
 			return {
@@ -65,90 +57,106 @@
 				courseSource:"",
 				courseImg:"",
 				imgArr:[],
-				image:'https://th.bing.com/th/id/R02f5ef9d57f682e27d6d2ede79c054ec?rik=6%2bOkmRgdRreyPw&riu=http%3a%2f%2fbpic.588ku.com%2felement_pic%2f01%2f37%2f84%2f72573c64827f532.jpg&ehk=khoFsEZdtMf%2f8Z30wnc5rBApFWkB75v1iTOlcC9Qf7Y%3d&risl=&pid=ImgRaw'
-				
+				image:false,
+				uploadImgInfo:null
 			};
 		},
 		onUnload() {
 			
 		},
-		methods: {
-			chooseImage: async function() {
-				// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
-				if (this.sourceTypeIndex !== 2) {
-					let status = await this.checkPermission();
-					if (status !== 1) {
-						return;
-					}
+		methods:{
+			showToast:function(msg){
+				uni.showToast({
+					title:msg,
+					icon:'none'
+				});
+			},			
+			checkForm:function(){
+				
+				if(!this.courseName){
+					this.showToast('请填写课程名称');
+					return;
 				}
-		
-				if (this.imageList.length === 9) {
-					let isContinue = await this.isFullImg();
-					console.log("是否继续?", isContinue);
-					if (!isContinue) {
-						return;
-					}
+				if(!this.courseClass){
+					this.showToast('请填写课程标签');
+					return;
 				}
-				uni.chooseImage({
-					sourceType: sourceType[this.sourceTypeIndex],
-					sizeType: sizeType[this.sizeTypeIndex],
-					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
-					success: (res) => {
-						this.imageList = this.imageList.concat(res.tempFilePaths);
-					},
-					fail: (err) => {
-						console.log("err: ",err);
-						if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
-							this.checkPermission(err.code);
-						}
-						if(err.errMsg.indexOf('cancel') !== '-1'){
-							return;
-						}
-						uni.getSetting({
-							success: (res) => {
-								let authStatus = false;
-								switch (this.sourceTypeIndex) {
-									case 0:
-										authStatus = res.authSetting['scope.camera'];
-										break;
-									case 1:
-										authStatus = res.authSetting['scope.album'];
-										break;
-									case 2:
-										authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
-										break;
-									default:
-										break;
-								}
-								if (!authStatus) {
-									uni.showModal({
-										title: '授权失败',
-										content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
-										success: (res) => {
-											if (res.confirm) {
-												uni.openSetting()
-											}
-										}
-									})
-								}
-							}
+				if(!this.courseIntroduce){
+					this.showToast('请填写课程介绍');
+					return;
+				}
+				if(!this.courseTeacher){
+					this.showToast('请填写课程教师');
+					return;
+				}
+				if(!this.teacherIntroduce){
+					this.showToast('请填写教师介绍');
+					return;
+				}
+				if(!this.courseSource){
+					this.showToast('请填写课程来源');
+					return;
+				}
+				if(!this.courseImg){
+					console.log(this.courseImg);
+					this.showToast('请选择课程封面');
+					return;
+				}
+				this.submitForm();		//检查完成 没问题 提交表单
+			},
+			
+			submitForm:function(){
+				this.$requestData({
+					url:'/course/createCourse',
+					data:{
+						courseName:this.courseName,
+						courseClass:this.courseClass,
+						courseIntroduce:this.courseIntroduce,
+						courseTeacher:this.courseTeacher,
+						teacherIntroduce:this.teacherIntroduce,
+						courseSource:this.courseSource,
+						courseImg:this.courseImg,
+					}
+				}).then(function(res){
+					if(res.data.code==200){
+						uni.showToast({
+							title:'创建成功！',
+							icon:'none'
+						});
+						//跳转到课程详情界面
+						console.log(res.data);
+						console.log('关闭当前界面，跳转到课程详情界面');
+						uni.redirectTo({
+							url:''
 						})
+					}else{
+						this.showToast('创建失败');
 					}
-				})
+				});
 			},
-			previewImage: function(e) {
-				var current = e.target.dataset.src
-				uni.previewImage({
-					current: current,
-					urls: this.imageList
-				})
+			//上传图片
+			uploadImage:function(){
+				uni.uploadFile({
+				            url: 'http://49.234.222.55:8081/api/image/upload',
+				            filePath: this.image,
+				            name: 'file',
+				            success: (uploadFileRes) => {
+								let uploadImgInfo=uploadFileRes.data;	//保存上传图片返回的信息
+								uploadImgInfo=JSON.parse(uploadImgInfo)
+								if(uploadImgInfo.code!=200){
+									this.showToast('图片上传失败');
+								}else{
+									this.showToast('图片上传完成');
+									this.courseImg=uploadImgInfo.data;	//上传图片完成 赋值form表单
+								}
+								
+				            },
+							
+				        });
 			},
-			async checkPermission(code) {
-				let type = code ? code - 1 : this.sourceTypeIndex;
-				let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
-					await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
-						'android.permission.READ_EXTERNAL_STORAGE');
-		
+			//检查权限
+			checkPermission:function() {
+				let status = permision.requestAndroid('android.permission.READ_EXTERNAL_STORAGE');
 				if (status === null || status === 1) {
 					status = 1;
 				} else {
@@ -164,15 +172,15 @@
 				}
 				return status;
 			},
+			//选择图片
 			chooseImg:function(){
-				console.log('上传图片'),
-				uni.chooseImage({   //上传图片的内置方法
-					count:5, //在h5浏览器限制不住
-					success:res=>{
-						// console.log(this)
-						this.imgArr=res.tempFilePaths  //返回的图片路径将他保存到imgArr中
-						//注意这里有两坑，1.这里要使用箭头函数，指向外层，普通函数就指向success这个方法
-						//2.这里的imgArr是数组不能直接绑定到src上面由于第一次我只上传一张图片，没发现这个问题，报错了
+				uni.chooseImage({   //选择图片的内置方法
+					count:1,
+					sourceType:['album'],	//从相册选择
+					success:res=>{			//图片选择完成
+						this.imgArr=res.tempFilePaths;
+						this.image=this.imgArr[0];	//展示图片
+						this.uploadImage();			//上传图片
 					}
 				})
 			},
@@ -184,13 +192,21 @@
 		background: #FFF;
 	}
 
+
+	.icontianjia{
+		font-size: 100rpx;
+		color: rgba(0,0,0,0.5);
+		padding: 65rpx 0;
+	}
 	.img_preview{
-		width: 230rpx;
 		height: 230rpx;
+		width: 408rpx;
 	}
 	.imguploader{
 		height: 230rpx;
+		width: 408rpx;
 		background-color: rgb(197, 197, 197);
+		text-align: center;
 	}
 	.txt {
 		font-size: 32rpx;
