@@ -31,12 +31,10 @@
 						</view>
 					</view>
 					<view class="video-plane" v-else>
-						<text class="txt">选择视频</text>
-						<view class="imguploader">
-							<view v-if="!image" class="iconfont icontianjia" @tap="chooseImg"></view>
-							<view v-else class="img_view">
-								<image class="img_preview" :src="image" :data-src="image"  @tap="chooseImg" ></image>
-							</view>
+						<text class="txt">视频</text>
+						<view class="videouploader">
+							<button v-if="!videoLocalAddress" @tap="chooseVideo">选择视频</button>
+							<text v-else @tap="chooseVideo">{{this.videoLocalFileName}}</text>
 						</view>
 					</view>
 					<button class="reg" @click="checkForm">添 加</button>
@@ -63,6 +61,9 @@
 				videoAddress:"",
 				liveType:true,
 				pMask: true,
+				image:'',
+				videoLocalAddress:'',
+				videoLocalFileName:'',
 				item:{
 						start:0,
 						pShowFlag: false,
@@ -111,22 +112,30 @@
 				}
 			},
 			checkForm:function(){
-				if(!this.courseName){
+				if(!this.className){
 					this.showToast('请填写课时名称');
 					return;
 				}
-				
-				//检查 未完成
-				this.submitForm();		//检查完成 没问题 提交表单
+				if(!this.videoLocalAddress){
+					this.showToast('请选择视频');
+					return;
+				}
+				this.uploadVideo();	//开始上传视频，上传完成自动提交表单
 			},
 			
 			submitForm:function(){
 				this.$requestData({
 					url:'/lesson/create',
 					data:{
-							
+						videoName:this.className,
+						live:this.liveType,
+						videoAddress:this.videoAddress,
+						startTime:this.startDate,
+						endTime:this.endDate,
+						courseId:this.courseId
 					}
 				}).then(function(res){
+					console.log(res);
 					if(res.data.code==200){
 						uni.showToast({
 							title:'创建成功！',
@@ -139,24 +148,38 @@
 							url:''
 						})
 					}else{
-						this.showToast('创建失败');
+						if(res.data.code==403){
+							uni.showToast({
+								title:'请登录',
+								icon:'none'
+							});
+							return;
+						}
+						uni.showToast({
+							title:'创建失败',
+							icon:'none'
+						});
 					}
 				});
 			},
-			//上传图片
-			uploadImage:function(){
+			//上传视频
+			uploadVideo:function(){
+				uni.showLoading({
+					title:'视频上传中...'
+				});
 				uni.uploadFile({
-				            url: this.$apiPath+'/image/upload',
-				            filePath: this.image,
+				            url: this.$apiPath+'/video/upload',
+				            filePath: this.videoLocalAddress,
 				            name: 'file',
 				            success: (uploadFileRes) => {
-								let uploadImgInfo=uploadFileRes.data;	//保存上传图片返回的信息
-								uploadImgInfo=JSON.parse(uploadImgInfo)
-								if(uploadImgInfo.code!=200){
-									this.showToast('图片上传失败');
+								let uploadVideoInfo=uploadFileRes.data;	//保存上传图片返回的信息
+								uploadVideoInfo=JSON.parse(uploadVideoInfo)
+								if(uploadVideoInfo.code!=200){
+									this.showToast('视频上传失败');
 								}else{
-									this.showToast('图片上传完成');
-									this.courseImg=uploadImgInfo.data;	//上传图片完成 赋值form表单
+									this.showToast('视频上传完成');
+									this.videoAddress=uploadVideoInfo.data;	//上传完成 赋值form表单
+									this.submitForm();		//提交表单
 								}
 								
 				            },
@@ -181,15 +204,16 @@
 				}
 				return status;
 			},
-			//选择图片
-			chooseImg:function(){
-				uni.chooseImage({   //选择图片的内置方法
+			//选择视频
+			chooseVideo:function(){
+				uni.chooseVideo({   //选择视频的内置方法
 					count:1,
 					sourceType:['album'],	//从相册选择
-					success:res=>{			//图片选择完成
-						this.imgArr=res.tempFilePaths;
-						this.image=this.imgArr[0];	//展示图片
-						this.uploadImage();			//上传图片
+					success:res=>{			//选择完成
+						console.log(res);
+						this.videoLocalAddress=res.tempFilePath;
+						this.videoLocalFileName=res.tempFile.name;
+						console.log(this.videoLocalFileName);
 					}
 				});
 			},
@@ -214,7 +238,7 @@
 				this.$refs.myDTPicker.show();
 			},
 			pickerCancel(data) {
-				this.item.pShowFlag = false
+				this.item.pShowFlag = false;
 			},
 			pickerConfirm(data) {
 				//取消时间选择器选择限制
@@ -242,23 +266,12 @@
 		margin: 20rpx 0;
 		
 	}
-	.item{
-			margin: 15rpx 0;
-			margin-right: 30rpx ;
-		}
-	.icontianjia{
-		font-size: 100rpx;
-		color: rgba(0,0,0,0.5);
-		padding: 65rpx 0;
-	}
 	.img_preview{
 		height: 230rpx;
 		width: 408rpx;
 	}
-	.imguploader{
-		height: 230rpx;
-		width: 408rpx;
-		background-color: rgb(197, 197, 197);
+	.videouploader{
+		padding: 30rpx;
 		text-align: center;
 	}
 	.txt {
