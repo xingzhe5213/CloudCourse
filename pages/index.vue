@@ -3,8 +3,8 @@
 		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 			<swiper-item v-for="item in sliderData" :key="item.courseId">
 				<view class="swiper-item">
-					<image v-if="!item.courseSource" class="swiper_image" mode="aspectFill" :src="$imgPath+item.courseImg"></image>
-					<image v-if="item.courseSource" class="swiper_image" mode="aspectFill" :src="item.courseImg"></image>
+					<image v-if="!item.courseImg.startsWith('http')" class="swiper_image" mode="aspectFill" :src="$imgPath+item.courseImg"></image>
+					<image v-if="item.courseImg.startsWith('http')" class="swiper_image" mode="aspectFill" :src="item.courseImg"></image>
 				</view>
 				<view class="swiper_bg">
 					<p class="swiper_name">{{item.courseName}}</p>

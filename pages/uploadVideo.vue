@@ -22,19 +22,19 @@
 					<view class="live-plane" v-if="liveType">
 						<view class="t-a">
 							<text class="txt">开始时间</text>
-							<button class="button" @tap="datetimePicker('0')">{{this.startDate||'选择开始时间'}}</button>
+							<view class="button_time" @tap="datetimePicker('0')">{{this.startDate||'选择开始时间'}}</view>
 						</view>
 						<view class="t-a">
 							<text class="txt">结束时间</text>
-							<button class="button" @tap="datetimePicker('1')">{{this.endDate||'选择结束时间'}}</button>
+							<view class="button_time" @tap="datetimePicker('1')">{{this.endDate||'选择结束时间'}}</view>
 													
 						</view>
 					</view>
 					<view class="video-plane" v-else>
-						<text class="txt">视频</text>
+						<text class="txt">选择视频</text>
 						<view class="videouploader">
-							<button v-if="!videoLocalAddress" @tap="chooseVideo">选择视频</button>
-							<text v-else @tap="chooseVideo">{{this.videoLocalFileName}}</text>
+							<view class="button_time" @tap="chooseVideo">{{this.videoLocalFileName||'选择视频'}}</view>
+							<!-- <text v-else @tap="chooseVideo"></text> -->
 						</view>
 					</view>
 					<button class="reg" @click="checkForm">添 加</button>
@@ -76,7 +76,7 @@
 				
 			};
 		},
-		onUnload(e) {
+		onLoad(e) {
 			this.courseId=e.courseId;
 		},
 		methods:{
@@ -116,14 +116,20 @@
 					this.showToast('请填写课时名称');
 					return;
 				}
-				if(!this.videoLocalAddress){
+				if(this.liveType==false&&!this.videoLocalAddress){
 					this.showToast('请选择视频');
 					return;
 				}
-				this.uploadVideo();	//开始上传视频，上传完成自动提交表单
+				if(this.liveType==false&&this.videoLocalAddress){
+					this.uploadVideo();	//开始上传视频，上传完成自动提交表单
+				}
+				if(this.liveType==true){
+					this.submitForm();	//提交表单
+				}
 			},
 			
 			submitForm:function(){
+				let val=this.courseId
 				this.$requestData({
 					url:'/lesson/create',
 					data:{
@@ -141,12 +147,9 @@
 							title:'创建成功！',
 							icon:'none'
 						});
-						//跳转到课程详情界面
-						console.log(res.data);
-						console.log('关闭当前界面，跳转到课程详情界面');
 						uni.redirectTo({
-							url:''
-						})
+							url: 'CourseDetails?courseID='+val+'&videoID=&initialTime=0'
+						});
 					}else{
 						if(res.data.code==403){
 							uni.showToast({
@@ -212,7 +215,7 @@
 					success:res=>{			//选择完成
 						console.log(res);
 						this.videoLocalAddress=res.tempFilePath;
-						this.videoLocalFileName=res.tempFile.name;
+						this.videoLocalFileName='已选择视频';
 						console.log(this.videoLocalFileName);
 					}
 				});
@@ -271,12 +274,14 @@
 		width: 408rpx;
 	}
 	.videouploader{
-		padding: 30rpx;
+		/* padding: 30rpx; */
 		text-align: center;
 	}
 	.txt {
-		font-size: 32rpx;
+		display: block;
+		font-size: 16px;
 		font-weight: bold;
+		margin: 50rpx 0 0;
 		color: #333333;
 	}
 	.img-a {
@@ -286,16 +291,15 @@
 		background-size: 100%;
 	}
 	.reg {
-		font-size: 28rpx;
+		position: fixed;
+		font-size: 16px;
+		background: #57e;
 		color: #fff;
 		height: 90rpx;
+		width: 80%;
 		line-height: 90rpx;
 		border-radius: 50rpx;
-		font-weight: bold;
-		background: #f5f6fa;
-		color: #000000;
-		text-align: center;
-		margin-top: 30rpx;
+		bottom: 50rpx;
 	}
 	
 	.plane-view {
@@ -311,23 +315,22 @@
 		width: 600rpx;
 		margin: 0 auto;
 		font-size: 28rpx;
-		padding-top: 80rpx;
+		padding-top: 40rpx;
 	}
 	
-	.t-plane button {
-		font-size: 28rpx;
-		background: #57e;
-		color: #fff;
-		height: 90rpx;
-		line-height: 90rpx;
-		border-radius: 50rpx;
-		font-weight: bold;
+	.button_time {
+		font-size: 14px;
+		text-align: center;
+		color: #ccc;
+		height: 70rpx;
+		line-height: 70rpx;
+		border-bottom: 0.25rpx #dddddd solid;
 	}
 	
 	.t-plane input {
 		height: 90rpx;
 		line-height: 90rpx;
-		margin-bottom: 50rpx;
+		/* margin-bottom: 50rpx; */
 		border-bottom: 1px solid #e9e9e9;
 		font-size: 28rpx;
 	}
@@ -404,6 +407,13 @@
 	}
 	
 	.button {
+		font-size: 28rpx;
+		background: #57e;
+		color: #fff;
+		height: 90rpx;
+		line-height: 90rpx;
+		border-radius: 50rpx;
+		font-weight: bold;
 		margin-bottom: 20rpx;
 	}
 	
@@ -411,5 +421,9 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.item{
+		margin-right: 100rpx;
+		margin-top: 24rpx;
 	}
 </style>

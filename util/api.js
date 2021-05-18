@@ -15,7 +15,6 @@ export const requestData=(options)=>{ //传入的options是一个json对象
 			data:options.data || {},
 			dataType:options.dataType || "json",
 			success: (res) => {
-				// console.log(res)
 				resolve(res)
 			},
 			fail: (err) => {

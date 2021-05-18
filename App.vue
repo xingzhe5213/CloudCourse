@@ -13,7 +13,7 @@
 </script>
 
 <style>
-	@import "https://at.alicdn.com/t/font_2504726_mhkvm57y5ug.css";
+	@import "https://at.alicdn.com/t/font_2504726_pchg098qilj.css";
 </style>
 
 <style>

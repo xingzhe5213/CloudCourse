@@ -4,12 +4,10 @@
 	border-radius: 25rpx;
 }
 .course{
-	/* overflow: auto; */
 	height:145rpx;
 	width:660rpx;
 	padding: 25rpx 0;
 	margin:0 20rpx 10rpx 20rpx;
-	
 }
 .border{
 	border-bottom: 0.5rpx #ccc solid;

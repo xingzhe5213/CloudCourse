@@ -219,7 +219,7 @@ body{
 }
 .img-a {
 	width: 100%;
-	height: 450rpx;
+	height: 400rpx;
 	background-color:#57e;
 	background-size: 100%;
 }

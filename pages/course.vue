@@ -36,6 +36,10 @@
 				login:true
 			}
 		},
+		onShow() {
+			this.getCouDataList(5);
+			this.getLivDataList(5);
+		},
 		onLoad() {
 			this.getCouDataList(5);
 			this.getLivDataList(5);
