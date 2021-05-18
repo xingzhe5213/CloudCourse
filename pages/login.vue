@@ -64,6 +64,7 @@
 	</view>
 </template>
 <script>
+	import md5 from "../util/md5.js";
 export default {
 	data() {
 		return {
@@ -96,13 +97,12 @@ export default {
 				uni.showToast({ title: '请输入您的密码', icon: 'none' });
 				return;
 			}
-			console.log("登录");
 			let _this = this;
 			_this.$requestData({
 				url:'/auth/login',
 				data:{
 					userName:that.user,
-					password:that.pwd
+					password:md5.hex_md5(that.pwd),
 				}
 			}).then((res) => {
 				if(res.data.code === 200){
@@ -180,7 +180,7 @@ export default {
 				url:'/auth/regist',
 				data:{
 					userName:this.user,
-					password:this.pwd,
+					password:hex_md5(that.pwd),
 					phoneNumber:this.phone,
 					email:this.email,
 					lecturer:this.lecturer
@@ -219,7 +219,7 @@ body{
 }
 .img-a {
 	width: 100%;
-	height: 400rpx;
+	height: 450rpx;
 	background-color:#57e;
 	background-size: 100%;
 }
