@@ -180,7 +180,7 @@ export default {
 				url:'/auth/regist',
 				data:{
 					userName:this.user,
-					password:hex_md5(that.pwd),
+					password:hex_md5(this.pwd),
 					phoneNumber:this.phone,
 					email:this.email,
 					lecturer:this.lecturer
