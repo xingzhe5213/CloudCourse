@@ -38,7 +38,6 @@ body{
 .plane-view {
 	width: 100%;
 	position: relative;
-	background-color: #ffffff;
 }
 .t-plane {
 	width: 600rpx;
