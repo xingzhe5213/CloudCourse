@@ -78,7 +78,6 @@
 					_this.sliderData=res.data.data.list;
 				}
 			});
-			
 			// 推荐课程
 			_this.$requestData({
 				url:'/course/getCourse',
@@ -92,7 +91,6 @@
 					_this.courseData=res.data.data.list;
 				}
 			});
-			
 			// 直播课程
 			_this.$requestData({
 				url:'/course/getCourse',
@@ -106,7 +104,6 @@
 					_this.liveData=res.data.data.list;
 				}
 			});
-			
 		},
 		methods: {
 			more(val){
@@ -116,7 +113,6 @@
 			},
 			ToVideo(val){
 				let _this = this;
-				
 				let videoID="";
 				let initialTime="";
 				_this.$requestData({

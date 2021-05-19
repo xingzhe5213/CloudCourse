@@ -1,4 +1,3 @@
-<!-- 蓝色登录页面2 -->
 <template>
 	<view>
 		<view class="plane-view">
@@ -26,7 +25,6 @@
 					</view>
 					<view class="t-a">
 						<text class="txt">课程类型</text>
-						
 						<radio-group @change="onCourseTypeChange">
 							<radio value="false" checked="true" class="item">视频</radio>
 							<radio value="true" class="item">直播</radio>
@@ -34,7 +32,6 @@
 					</view>
 					<view class="t-a">
 						<text class="txt">课程封面</text>
-
 						<view class="imguploader">
 							<view v-if="!image" class="iconfont icontianjia" @tap="chooseImg"></view>
 							<view v-else class="img_view">
@@ -48,6 +45,7 @@
 		</view>
 	</view>
 </template>
+
 <script>
 	import permision from "@/common/permission.js"
 	export default {
@@ -73,11 +71,9 @@
 				});
 			},	
 			onCourseTypeChange:function(e){
-				console.log(e.detail.value);
 				this.courseLive=e.detail.value;
 			},
 			checkForm:function(){
-				
 				if(!this.courseName){
 					this.showToast('请填写课程名称');
 					return;
@@ -99,13 +95,11 @@
 					return;
 				}
 				if(!this.courseImg){
-					console.log(this.courseImg);
 					this.showToast('请选择课程封面');
 					return;
 				}
 				this.submitForm();		//检查完成 没问题 提交表单
 			},
-			
 			submitForm:function(){
 				this.$requestData({
 					url:'/course/createCourse',
@@ -184,144 +178,7 @@
 		}
 	};
 </script>
-<style>
-	body{
-		background: #FFF;
-	}
 
-
-	.icontianjia{
-		font-size: 100rpx;
-		color: rgba(0,0,0,0.5);
-		padding: 65rpx 0;
-	}
-	.img_preview{
-		height: 230rpx;
-		width: 408rpx;
-	}
-	.imguploader{
-		height: 230rpx;
-		width: 408rpx;
-		background-color: rgb(197, 197, 197);
-		text-align: center;
-	}
-	.txt {
-		display: block;
-		font-size: 16px;
-		font-weight: bold;
-		margin: 40rpx 0 0;
-		color: #333333;
-	}
-	.img-a {
-		width: 100%;
-		height: 450rpx;
-		background-color:#57e;
-		background-size: 100%;
-	}
-	.reg {
-		font-size: 28rpx;
-		color: #fff;
-		height: 90rpx;
-		line-height: 90rpx;
-		border-radius: 50rpx;
-		font-weight: bold;
-		background: #f5f6fa;
-		color: #000000;
-		text-align: center;
-		margin-top: 30rpx;
-	}
-	
-	.plane-view {
-		width: 100%;
-		position: relative;
-		/* margin-top: -120rpx; */
-		/* background-color: #ffffff; */
-		/* border-radius: 8% 8% 8% 8%; */
-		/* padding: 10rpx 0rpx 80rpx 0rpx; */
-	}
-	
-	.t-plane {
-		width: 600rpx;
-		margin: 0 auto;
-		font-size: 28rpx;
-		/* padding-top: 80rpx; */
-	}
-	
-	.t-plane button {
-		font-size: 28rpx;
-		background: #57e;
-		color: #fff;
-		height: 90rpx;
-		line-height: 90rpx;
-		border-radius: 50rpx;
-		font-weight: bold;
-	}
-	
-	.t-plane input {
-		height: 90rpx;
-		line-height: 90rpx;
-		/* margin-bottom: 50rpx; */
-		border-bottom: 1px solid #e9e9e9;
-		font-size: 28rpx;
-	}
-	
-	.t-plane .t-a {
-		position: relative;
-	}
-
-	.t-plane .t-c {
-		position: absolute;
-		right: 22rpx;
-		top: 22rpx;
-		background: #5677fc;
-		color: #fff;
-		font-size: 24rpx;
-		border-radius: 50rpx;
-		height: 50rpx;
-		line-height: 50rpx;
-		padding: 0 25rpx;
-	}
-	
-	.t-plane .t-d {
-		text-align: center;
-		color: #999;
-		margin: 80rpx 0;
-	}
-	
-	.t-plane .t-e {
-		text-align: center;
-		width: 250rpx;
-		margin: 80rpx auto 0;
-	}
-	
-	.t-plane .t-g {
-		float: left;
-		width: 50%;
-	}
-	
-	.t-plane .t-e image {
-		width: 50rpx;
-		height: 50rpx;
-	}
-	
-	.t-plane .t-f {
-		text-align: center;
-		margin: 150rpx 0 0 0;
-		color: #666;
-	}
-	
-	.t-plane .t-f text {
-		margin-left: 20rpx;
-		color: #aaaaaa;
-		font-size: 27rpx;
-	}
-	
-	.t-plane .uni-input-placeholder {
-		color: #aeaeae;
-	}
-	.item{
-		margin-right: 100rpx;
-		margin-top: 24rpx;
-	}
-	
+<style lang="scss" scoped>
+	@import "@/static/css/addcourse.css";
 </style>

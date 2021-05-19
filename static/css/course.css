@@ -1,0 +1,51 @@
+.uni-margin-wrap {
+	width: 700rpx;
+	margin:20rpx auto 80rpx;
+	border-radius: 25rpx;
+}
+.courseTitle{
+	font-size:18px;
+	margin: 30rpx 10rpx;
+	height: 48rpx;
+	line-height: 48rpx;
+}
+.courseNone{
+	text-align: center;	
+	color:#999;
+	width:100%;
+	margin:100rpx auto;
+}
+.courMore{
+	text-align: center;
+	width:75%;
+	height:55rpx;
+	line-height: 55rpx;
+	color:#5577ee;
+	border-radius: 25rpx;
+	border: 1rpx #5577ee solid;
+	margin:10rpx auto;
+}
+.editbutton{
+	float: right;
+	font-size: 14px;
+	border: 0.25rpx #5577ee solid;
+	border-radius: 20rpx;
+	padding: 0 20rpx;
+	margin: 4rpx;
+	color: #5577ee;
+	height: 40rpx;
+	line-height: 40rpx;
+}
+.Addcour{
+	position: fixed;
+	bottom: 10rpx;
+	right:35%;
+	text-align: center;
+	width:30%;
+	height:55rpx;
+	line-height: 55rpx;
+	color:#fff;
+	background-color: #57e;
+	border-radius: 25rpx;
+	border: 1rpx #5577ee solid;
+}

@@ -12,7 +12,6 @@
 			<span @click="Switch('高等数学')" class="tag">高等数学</span>
 			<span @click="Switch('法律')" class="tag">法律</span>
 		</view>
-		
 		<p class="courseNone" v-if="courseData.length==0">未找到相关课程</p>
 		<view v-if="courseData.length>0">
 			<p class="courseTitle" v-if="search==0">{{title||'课程'}}</p>
@@ -39,7 +38,6 @@
 			}
 		},
 		onLoad(e){
-			console.log(e)
 		    this.title=e.title;
 			this.search=e.search;
 			this.getCouDataList(5);
@@ -76,47 +74,6 @@
 	}
 </script>
 
-<style>
-.uni-margin-wrap {
-	width: 700rpx;
-	margin:20rpx auto;
-	border-radius: 25rpx;
-}
-.tags{
-	text-align: center;
-}
-.tag{
-	display: inline-block;
-	height: 40rpx;
-	line-height: 40rpx;
-	width: auto;
-	padding: 5rpx 20rpx;
-	margin: 10rpx 10rpx;
-	color: #969896;
-	font-size: 12px;
-	background-color: #fff;
-	border: 1px #969896 solid;
-	border-radius: 30rpx;
-}
-.courseTitle{
-	font-size:18px;
-	margin: 30rpx 10rpx;
-}
-.courseNone{
-	text-align: center;	
-	color:#999;
-	width:100%;
-	margin:100rpx auto;
-}
-.courMore{
-	text-align: center;
-	color:#999;
-	width:75%;
-	height:55rpx;
-	line-height: 55rpx;
-	color:#5577ee;
-	border-radius: 25rpx;
-	border: 1rpx #5577ee solid;
-	margin:10rpx auto;
-}
+<style lang="scss" scoped>
+	@import "@/static/css/CourseList.css";
 </style>

@@ -17,7 +17,7 @@
 </style>
 
 <style>
-	body{
+	page{
 		background-color: #F7F7F7;
 	}
 </style>

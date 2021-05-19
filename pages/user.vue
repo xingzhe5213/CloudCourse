@@ -27,8 +27,9 @@
 		</view>
 	</view>
 </template>
+
 <script>
-export default {
+	export default {
 		data() {
 			return {
 				data:"",
@@ -38,7 +39,6 @@ export default {
 		},
 		onLoad() {
 			let _this = this;
-			
 			_this.$requestData({
 				url:'/auth/info',
 				data:{}
@@ -73,81 +73,8 @@ export default {
 			}
 		}
 	}
-
 </script>
-<style lang="scss">
-	.btn_exit{
-		text-align: center;
-		left: 10%;
-		background-color: #fff;
-		color: #f00;
-		border-radius: 50rpx;
-		border:0.25rpx #ccc solid;
-		width: 80%;
-		height: 90rpx;
-		line-height: 90rpx;
-		margin: 450rpx auto 0;
-	}
-	.user-info-body{
-		width: 700rpx;
-		margin: 40rpx auto;
-		border-radius: 25rpx;
-		background-color: #fff;
-	}
-	.user-info{
-		width: 660rpx;
-		margin: 0 25rpx;
-	}
-	.info-item span{
-		font-size: 16px;
-		padding-right: 15rpx;
-		color:#5577ee;
-	}
-	.info-item{
-		width: 620rpx;
-		height: 90rpx;
-		line-height: 90rpx;
-		text-align: left;
-		padding: 10rpx;
-		font-size: 16px;
-	}
-	.border{
-		border-bottom: 0.25rpx #ccc solid;
-	}
-	.info-item::before{
-		font-size: 24px;
-		padding: 20rpx;
-	}
-	.user-info-head{
-		width: 100%;
-		height: 400rpx;
-		position: relative;
-	}
-	.bg{
-		width: 100%;
-		height: 100%;
-		position: absolute;
-	}
-	.head-img{
-		width: 190rpx;
-		height:190rpx;
-		border: 5rpx solid #fff;
-		border-radius: 50%;
-		margin: 100rpx 60rpx;
-	}
-	.info-plane{
-		position: absolute;
-		display: inline-block;
-		margin-top: 120rpx;
-	}
-	.username{
-		font-size: 22px;
-		height: 50px;
-		color:#fff;
-		line-height: 50px;
-	}
-	.login{
-		font-size: 14px;
-		color:#ddd;
-	}
+
+<style lang="scss" scoped>
+	@import "@/static/css/user.css";
 </style>

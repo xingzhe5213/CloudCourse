@@ -1,0 +1,140 @@
+body{
+	background: #FFF;
+}
+.radio{
+	margin: 20rpx 0;
+}
+.img_preview{
+	height: 230rpx;
+	width: 408rpx;
+}
+.videouploader{
+	text-align: center;
+}
+.txt {
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	margin: 50rpx 0 0;
+	color: #333333;
+}
+.img-a {
+	width: 100%;
+	height: 450rpx;
+	background-color:#57e;
+	background-size: 100%;
+}
+.reg {
+	position: fixed;
+	font-size: 16px;
+	background: #57e;
+	color: #fff;
+	height: 90rpx;
+	width: 80%;
+	line-height: 90rpx;
+	border-radius: 50rpx;
+	bottom: 50rpx;
+}
+.plane-view {
+	width: 100%;
+	position: relative;
+	background-color: #ffffff;
+}
+.t-plane {
+	width: 600rpx;
+	margin: 0 auto;
+	font-size: 28rpx;
+}
+.button_time {
+	font-size: 14px;
+	text-align: center;
+	color: #ccc;
+	height: 70rpx;
+	line-height: 70rpx;
+	border-bottom: 0.25rpx #dddddd solid;
+}
+.t-plane input {
+	height: 90rpx;
+	line-height: 90rpx;
+	border-bottom: 1px solid #e9e9e9;
+	font-size: 14px;
+}
+.t-plane .t-a {
+	position: relative;
+}
+.t-plane .t-c {
+	position: absolute;
+	right: 22rpx;
+	top: 22rpx;
+	background: #5677fc;
+	color: #fff;
+	font-size: 24rpx;
+	border-radius: 50rpx;
+	height: 50rpx;
+	line-height: 50rpx;
+	padding: 0 25rpx;
+}
+.t-plane .t-d {
+	text-align: center;
+	color: #999;
+	margin: 80rpx 0;
+}
+.t-plane .t-e {
+	text-align: center;
+	width: 250rpx;
+	margin: 80rpx auto 0;
+}
+.t-plane .t-g {
+	float: left;
+	width: 50%;
+}
+.t-plane .t-e image {
+	width: 50rpx;
+	height: 50rpx;
+}
+.t-plane .t-f {
+	text-align: center;
+	margin: 150rpx 0 0 0;
+	color: #666;
+}
+.t-plane .t-f text {
+	margin-left: 20rpx;
+	color: #aaaaaa;
+	font-size: 27rpx;
+}
+.t-plane .uni-input-placeholder {
+	color: #aeaeae;
+}
+/* 时间组件样式 */
+.page {
+	padding: 20rpx;
+}
+.mask-switch {
+	margin-bottom: 20rpx;
+}
+.desc {
+	margin-top: 30rpx;
+	margin-bottom: 10rpx;
+	color: #ff0000;
+	font-size: 12px;
+	white-space: pre-line;
+}
+.button {
+	font-size: 28rpx;
+	background: #57e;
+	color: #fff;
+	height: 90rpx;
+	line-height: 90rpx;
+	border-radius: 50rpx;
+	font-weight: bold;
+	margin-bottom: 20rpx;
+}
+.flex-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.item{
+	margin-right: 100rpx;
+	margin-top: 24rpx;
+}
