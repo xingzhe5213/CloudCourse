@@ -5,7 +5,7 @@ import { requestData } from './util/api.js'
 Vue.prototype.$requestData = requestData
 
 // 接口地址 
-Vue.prototype.$apiPath ="http://192.168.105.251:8081/api"
+Vue.prototype.$apiPath ="http://192.168.43.165:8081/api"
 
 // Vue.prototype.$apiPath ="http://49.234.222.55:8081/api"
 

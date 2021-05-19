@@ -96,8 +96,19 @@
 		        	}
 		        }
 		    }
-		}
-		
+		},{
+		    "path" : "pages/addcourse",
+		    "style" :
+		    {
+		        "navigationBarTitleText": "创建课程",
+		        "app-plus": {
+		        	"titleNView": {
+		        		"titleColor": "#fff",
+		        		"backgroundColor": "#5577ee"
+		        	}
+		        }
+		    }
+		}		
         ,{
             "path" : "pages/CourseDetails",
             "style" :                                                                                    

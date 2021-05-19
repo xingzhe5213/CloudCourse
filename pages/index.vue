@@ -1,7 +1,7 @@
 <template>
 	<view class="uni-margin-wrap">
 		<swiper class="swiper" circular :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-			<swiper-item v-for="item in sliderData" :key="item.courseId">
+			<swiper-item v-for="item in sliderData" :key="item.courseId" @click="ToVideo(item.courseId)">
 				<view class="swiper-item">
 					<image v-if="!item.courseImg.startsWith('http')" class="swiper_image" mode="aspectFill" :src="$imgPath+item.courseImg"></image>
 					<image v-if="item.courseImg.startsWith('http')" class="swiper_image" mode="aspectFill" :src="item.courseImg"></image>
@@ -31,9 +31,9 @@
 			</view>
 		</view>
 		<p class="courseTitle" v-if="courseData.length>0">推荐课程<span class="courseMore" @click="more('')">更多 >></span></p>
-		<CourseData :DataList='courseData'></CourseData>
+		<CourseData :DataList='courseData' edit='0'></CourseData>
 		<p class="courseTitle" v-if="liveData.length>0">直播课程<span class="courseMore" @click="more('')">更多 >></span></p>
-		<CourseData :DataList='liveData'></CourseData>
+		<CourseData :DataList='liveData' edit='0'></CourseData>
 	</view>
 </template>
 
@@ -113,6 +113,26 @@
 				uni.navigateTo({
 					url: 'CourseList?title='+val+'&search=0',
 				})
+			},
+			ToVideo(val){
+				let _this = this;
+				
+				let videoID="";
+				let initialTime="";
+				_this.$requestData({
+					url:'/ca/isMyCourse',
+					data:{
+						courseId:val
+					}
+				}).then((res) => {
+					if(res.data.data){
+						videoID=res.data.data.videoId;
+						initialTime=res.data.data.videoProgress;
+					}
+					uni.navigateTo({
+						url: 'CourseDetails?courseID='+val+'&videoID='+videoID+'&initialTime='+initialTime,
+					})
+				});
 			}
 		}
 	}

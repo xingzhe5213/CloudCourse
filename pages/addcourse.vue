@@ -25,8 +25,12 @@
 						<input type="text" name="teacherIntroduce" maxlength="500" placeholder="请输入教师介绍" v-model="teacherIntroduce" />
 					</view>
 					<view class="t-a">
-						<text class="txt">课程来源</text>
-						<input type="text" name="courseSource" maxlength="200" placeholder="请输入课程来源" v-model="courseSource" />
+						<text class="txt">课程类型</text>
+						
+						<radio-group @change="onCourseTypeChange">
+							<radio value="false" checked="true" class="item">视频</radio>
+							<radio value="true" class="item">直播</radio>
+						</radio-group>
 					</view>
 					<view class="t-a">
 						<text class="txt">课程封面</text>
@@ -54,15 +58,12 @@
 				courseIntroduce:"",
 				courseTeacher:"",
 				teacherIntroduce:"",
-				courseSource:"",
+				courseLive:"",
 				courseImg:"",
 				imgArr:[],
 				image:false,
 				uploadImgInfo:null
 			};
-		},
-		onUnload() {
-			
 		},
 		methods:{
 			showToast:function(msg){
@@ -70,7 +71,11 @@
 					title:msg,
 					icon:'none'
 				});
-			},			
+			},	
+			onCourseTypeChange:function(e){
+				console.log(e.detail.value);
+				this.courseLive=e.detail.value;
+			},
 			checkForm:function(){
 				
 				if(!this.courseName){
@@ -93,10 +98,6 @@
 					this.showToast('请填写教师介绍');
 					return;
 				}
-				if(!this.courseSource){
-					this.showToast('请填写课程来源');
-					return;
-				}
 				if(!this.courseImg){
 					console.log(this.courseImg);
 					this.showToast('请选择课程封面');
@@ -114,8 +115,9 @@
 						courseIntroduce:this.courseIntroduce,
 						courseTeacher:this.courseTeacher,
 						teacherIntroduce:this.teacherIntroduce,
-						courseSource:this.courseSource,
+						liveCourse:this.courseLive,
 						courseImg:this.courseImg,
+						courseSource:""
 					}
 				}).then(function(res){
 					if(res.data.code==200){
@@ -123,11 +125,8 @@
 							title:'创建成功！',
 							icon:'none'
 						});
-						//跳转到课程详情界面
-						console.log(res.data);
-						console.log('关闭当前界面，跳转到课程详情界面');
 						uni.redirectTo({
-							url:''
+							url: 'CourseDetails?courseID='+res.data.data.courseId+'&videoID=&initialTime=0',
 						})
 					}else{
 						this.showToast('创建失败');
@@ -137,22 +136,20 @@
 			//上传图片
 			uploadImage:function(){
 				uni.uploadFile({
-				            url: 'http://49.234.222.55:8081/api/image/upload',
-				            filePath: this.image,
-				            name: 'file',
-				            success: (uploadFileRes) => {
-								let uploadImgInfo=uploadFileRes.data;	//保存上传图片返回的信息
-								uploadImgInfo=JSON.parse(uploadImgInfo)
-								if(uploadImgInfo.code!=200){
-									this.showToast('图片上传失败');
-								}else{
-									this.showToast('图片上传完成');
-									this.courseImg=uploadImgInfo.data;	//上传图片完成 赋值form表单
-								}
-								
-				            },
-							
-				        });
+					url: 'http://49.234.222.55:8081/api/image/upload',
+					filePath: this.image,
+					name: 'file',
+					success: (uploadFileRes) => {
+						let uploadImgInfo=uploadFileRes.data;	//保存上传图片返回的信息
+						uploadImgInfo=JSON.parse(uploadImgInfo)
+						if(uploadImgInfo.code!=200){
+							this.showToast('图片上传失败');
+						}else{
+							this.showToast('图片上传完成');
+							this.courseImg=uploadImgInfo.data;	//上传图片完成 赋值form表单
+						}
+					},
+				});
 			},
 			//检查权限
 			checkPermission:function() {
@@ -209,8 +206,10 @@
 		text-align: center;
 	}
 	.txt {
-		font-size: 32rpx;
+		display: block;
+		font-size: 16px;
 		font-weight: bold;
+		margin: 40rpx 0 0;
 		color: #333333;
 	}
 	.img-a {
@@ -235,17 +234,17 @@
 	.plane-view {
 		width: 100%;
 		position: relative;
-		margin-top: -120rpx;
-		background-color: #ffffff;
-		border-radius: 8% 8% 8% 8%;
-		padding: 10rpx 0rpx 80rpx 0rpx;
+		/* margin-top: -120rpx; */
+		/* background-color: #ffffff; */
+		/* border-radius: 8% 8% 8% 8%; */
+		/* padding: 10rpx 0rpx 80rpx 0rpx; */
 	}
 	
 	.t-plane {
 		width: 600rpx;
 		margin: 0 auto;
 		font-size: 28rpx;
-		padding-top: 80rpx;
+		/* padding-top: 80rpx; */
 	}
 	
 	.t-plane button {
@@ -261,7 +260,7 @@
 	.t-plane input {
 		height: 90rpx;
 		line-height: 90rpx;
-		margin-bottom: 50rpx;
+		/* margin-bottom: 50rpx; */
 		border-bottom: 1px solid #e9e9e9;
 		font-size: 28rpx;
 	}
@@ -319,6 +318,10 @@
 	
 	.t-plane .uni-input-placeholder {
 		color: #aeaeae;
+	}
+	.item{
+		margin-right: 100rpx;
+		margin-top: 24rpx;
 	}
 	
 </style>

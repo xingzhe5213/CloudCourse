@@ -86,8 +86,7 @@ export default {
 		width: 80%;
 		height: 90rpx;
 		line-height: 90rpx;
-		position: fixed;
-		bottom: 50rpx;
+		margin: 450rpx auto 0;
 	}
 	.user-info-body{
 		width: 700rpx;
@@ -134,14 +133,21 @@ export default {
 		height:190rpx;
 		border: 5rpx solid #fff;
 		border-radius: 50%;
-		margin: 60rpx;
+		margin: 100rpx 60rpx;
 	}
 	.info-plane{
 		position: absolute;
 		display: inline-block;
-		margin-top: 100rpx;
+		margin-top: 120rpx;
 	}
 	.username{
-		font-size: 24px;
+		font-size: 22px;
+		height: 50px;
+		color:#fff;
+		line-height: 50px;
+	}
+	.login{
+		font-size: 14px;
+		color:#ddd;
 	}
 </style>

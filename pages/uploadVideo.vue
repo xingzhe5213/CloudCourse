@@ -34,7 +34,6 @@
 						<text class="txt">选择视频</text>
 						<view class="videouploader">
 							<view class="button_time" @tap="chooseVideo">{{this.videoLocalFileName||'选择视频'}}</view>
-							<!-- <text v-else @tap="chooseVideo"></text> -->
 						</view>
 					</view>
 					<button class="reg" @click="checkForm">添 加</button>
@@ -78,6 +77,12 @@
 		},
 		onLoad(e) {
 			this.courseId=e.courseId;
+		},
+		onBackPress(e){
+			uni.redirectTo({
+				url: 'CourseDetails?courseID='+this.courseId+'&videoID=&initialTime=0'
+			});
+			return true;
 		},
 		methods:{
 			fillZero:function (src, direction, digit) {
@@ -216,7 +221,6 @@
 						console.log(res);
 						this.videoLocalAddress=res.tempFilePath;
 						this.videoLocalFileName='已选择视频';
-						console.log(this.videoLocalFileName);
 					}
 				});
 			},
@@ -227,8 +231,6 @@
 					if(this.endDate){
 						this.item.pMax=this.formData(new Date(this.endDate),'yyyy-MM-dd hh:mm:ss');
 					}
-					console.log(this.item.pMin);
-					console.log(this.item.pMax);
 				}else{		//设置结束时间，必须大于开始时间，如果开始时间没设置，就必须大于当前时间
 					if(this.startDate){
 						this.item.pMin=this.formData(new Date(this.startDate),'yyyy-MM-dd hh:mm:ss');
@@ -305,17 +307,17 @@
 	.plane-view {
 		width: 100%;
 		position: relative;
-		margin-top: -50rpx;
+		/* margin-top: -50rpx; */
 		background-color: #ffffff;
-		border-radius: 8% 8% 8% 8%;
-		padding: 10rpx 0rpx 80rpx 0rpx;
+		/* border-radius: 8% 8% 8% 8%; */
+		/* padding: 10rpx 0rpx 80rpx 0rpx; */
 	}
 	
 	.t-plane {
 		width: 600rpx;
 		margin: 0 auto;
 		font-size: 28rpx;
-		padding-top: 40rpx;
+		/* padding-top: 40rpx; */
 	}
 	
 	.button_time {
@@ -332,7 +334,7 @@
 		line-height: 90rpx;
 		/* margin-bottom: 50rpx; */
 		border-bottom: 1px solid #e9e9e9;
-		font-size: 28rpx;
+		font-size: 14px;
 	}
 	
 	.t-plane .t-a {

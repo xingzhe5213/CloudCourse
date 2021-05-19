@@ -5,7 +5,7 @@
 			<view class="t-b">
 				您好，
 				<br />
-				欢迎使用云课堂
+				欢迎使用云直播课堂
 			</view>
 		</view>
 		<view class="plane-view" v-if="isLoginView">
@@ -13,14 +13,16 @@
 				<form class="cl">
 					<view class="t-a">
 						<text class="txt">用户名</text>
-						<input type="text" name="user" placeholder="请输入您的用户名" maxlength="11" v-model="user" />
+						<input type="text" name="user" placeholder="请输入用户名" maxlength="11" v-model="user" />
 					</view>
 					<view class="t-a">
 						<text class="txt">密码</text>
-						<input type="password" name="code" maxlength="18" placeholder="请输入您的密码" v-model="pwd" />
+						<input type="password" name="code" maxlength="18" placeholder="请输入密码" v-model="pwd" />
 					</view>
-					<button @tap="login()">登 录</button>
-					<view class="reg" @tap="showRegistView()">注 册</view>
+					<view class="button">
+						<button @tap="login()">登 录</button>
+						<view class="reg" @tap="showRegistView()">没有账号？去注册</view>
+					</view>
 				</form>
 			</view>
 		</view>
@@ -34,30 +36,30 @@
 					</view>
 					<view class="t-a">
 						<text class="txt">密码</text>
-						<input type="password" name="code" maxlength="18" placeholder="请输入您的密码" v-model="pwd" />
+						<input type="password" name="code" maxlength="18" placeholder="请输入密码" v-model="pwd" />
 					</view>
 					<view class="t-a">
 						<text class="txt">确认密码</text>
-						<input type="password" name="code" maxlength="18" placeholder="请再次输入您的密码" v-model="pwd_c" />
+						<input type="password" name="code" maxlength="18" placeholder="请再次输入密码" v-model="pwd_c" />
 					</view>
 					<view class="t-a">
 						<text class="txt">手机</text>
-						<input type="text" name="phone" maxlength="18" placeholder="请输入您的手机" v-model="phone" />
+						<input type="text" name="phone" maxlength="18" placeholder="请输入手机" v-model="phone" />
 					</view>
 					<view class="t-a">
 						<text class="txt">邮箱地址</text>
-						<input type="text" name="email" maxlength="18" placeholder="请输入您的邮箱地址" v-model="email" />
+						<input type="text" name="email" maxlength="18" placeholder="请输入邮箱地址" v-model="email" />
 					</view>
 	
 					<view class="t-a">
 						<text class="txt">身份</text>
 						<radio-group name="lecturer" v-model="lecturer" @change="registRadioValueChange">
-							<radio value="true">教师</radio>
-							<radio value="false" checked="true">学生</radio>
+							<radio class="item" value="true">教师</radio>
+							<radio class="item" value="false" checked="true">学生</radio>
 						</radio-group>
 					</view>
-					<button class="reg" @tap="reg()">注 册</button>
-					<text @click="showLoginView()" >已有账号 去登录</text>
+					<button  @tap="reg()">注 册</button>
+					<view class="reg" @click="showLoginView()" >已有账号？去登录</view>
 				</form>
 			</view>
 		</view>
@@ -86,7 +88,7 @@ export default {
 		login() {
 			var that = this;
 			if (!that.user) {
-				uni.showToast({ title: '请输入您的用户名', icon: 'none' });
+				uni.showToast({ title: '请输入用户名', icon: 'none' });
 				return;
 			}
 			if (!/^[\w\d]{4,}$/.test(that.user)) {
@@ -94,7 +96,7 @@ export default {
 				return;
 			}
 			if (!that.pwd) {
-				uni.showToast({ title: '请输入您的密码', icon: 'none' });
+				uni.showToast({ title: '请输入密码', icon: 'none' });
 				return;
 			}
 			let _this = this;
@@ -123,9 +125,15 @@ export default {
 			
 		},
 		showRegistView(){
+			uni.setNavigationBarTitle({
+				title:'注册'
+			});
 			this.isLoginView=false;
 		},
 		showLoginView(){
+			uni.setNavigationBarTitle({
+				title:'登录'
+			});
 			this.isLoginView=true;
 		},
 		//注册按钮点击
@@ -180,7 +188,7 @@ export default {
 				url:'/auth/regist',
 				data:{
 					userName:this.user,
-					password:hex_md5(this.pwd),
+					password:md5.hex_md5(this.pwd),
 					phoneNumber:this.phone,
 					email:this.email,
 					lecturer:this.lecturer
@@ -219,21 +227,16 @@ body{
 }
 .img-a {
 	width: 100%;
-	height: 450rpx;
+	height: 360rpx;
 	background-color:#57e;
-	background-size: 100%;
 }
 .reg {
-	font-size: 28rpx;
-	color: #fff;
+	font-size: 14px;
+	color: #999;
 	height: 90rpx;
 	line-height: 90rpx;
-	border-radius: 50rpx;
-	font-weight: bold;
-	background: #f5f6fa;
-	color: #000000;
 	text-align: center;
-	margin-top: 30rpx;
+	margin-top: 15rpx;
 }
 
 .plane-view {
@@ -241,19 +244,19 @@ body{
 	position: relative;
 	margin-top: -120rpx;
 	background-color: #ffffff;
-	border-radius: 8% 8% 8% 8%;
-	padding: 10rpx 0rpx 80rpx 0rpx;
+	border-radius: 80rpx 80rpx 0 0;
+	/* padding: 10rpx 0rpx 80rpx 0rpx; */
 }
 
 .t-plane {
 	width: 600rpx;
 	margin: 0 auto;
-	font-size: 28rpx;
-	padding-top: 80rpx;
+	font-size:14px;
+	padding-top: 65rpx;
 }
 
 .t-plane button {
-	font-size: 28rpx;
+	font-size: 14px;
 	background: #57e;
 	color: #fff;
 	height: 90rpx;
@@ -263,11 +266,11 @@ body{
 }
 
 .t-plane input {
-	height: 90rpx;
-	line-height: 90rpx;
-	margin-bottom: 50rpx;
+	height: 80rpx;
+	line-height: 80rpx;
+	margin-bottom: 32rpx;
 	border-bottom: 1px solid #e9e9e9;
-	font-size: 28rpx;
+	font-size: 14px;
 }
 
 .t-plane .t-a {
@@ -276,9 +279,9 @@ body{
 
 .t-b {
 	text-align: left;
-	font-size: 42rpx;
+	font-size: 21px;
 	color: #ffffff;
-	padding: 130rpx 0 0 70rpx;
+	padding: 35rpx 0 0 70rpx;
 	font-weight: bold;
 	line-height: 70rpx;
 }
@@ -344,5 +347,11 @@ body{
 	visibility: hidden;
 	height: 0;
 	content: '\20';
+}
+.button{
+	margin-top:666rpx;
+}
+.item{
+	margin: 26rpx 100rpx 54rpx 0;
 }
 </style>

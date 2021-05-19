@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<view class="video">
-			<video id="myVideo" v-if="!src.startsWith('http')" :src="$videoPath+src" @error="videoErrorCallback" autoplay="true" :initial-time="initialTime" controls direction="-90" show-fullscreen-btn object-fit="contain"></video>
-			<video id="myVideo" v-if="src.startsWith('http')" :src="src" @error="videoErrorCallback" autoplay="true" :initial-time="initialTime" controls direction="-90" show-fullscreen-btn object-fit="contain"></video>
+			<video id="myVideo" v-if="!src.startsWith('http')" :src="$videoPath+src" @timeupdate="timeupdate" @error="videoErrorCallback"  autoplay="true" :initial-time="initialTime" controls direction="-90" show-fullscreen-btn object-fit="contain"></video>
+			<video id="myVideo" v-if="src.startsWith('http')" :src="src" @timeupdate="timeupdate" @error="videoErrorCallback"  autoplay="true" :initial-time="initialTime" controls direction="-90" show-fullscreen-btn object-fit="contain"></video>
 		</view>
 		<view v-if="course.courseSource" class="iconfont iconcaidan">{{course.courseSource}}</view>
 		<view class="uni-margin-wrap">
@@ -12,7 +12,7 @@
 			<view class="Introduce"><p>{{course.teacherIntroduce}}</p></view>
 			<p class="IntTitle" v-if="">章 节 目 录</p>
 			<view class="VideoList">
-				<p class="iconfont iconshipin" :class="{'select':index<videos.length-1}" v-for="(item,index) in videos" @click="ToVideo(course.courseId,item.videoId)">{{item.videoName}}<span class="edit iconfont iconshanchu" v-if="Edit==1" @click="deleteVideo(item.videoName,item.videoId)"></span></p>
+				<p class="iconfont iconshipin" :class="[{'select':index<videos.length-1,'play':videoID==item.videoId}]" v-for="(item,index) in videos" @click="ToVideo(course.courseId,item.videoId)">{{item.videoName}}<span class="edit iconfont iconshanchu" v-if="Edit==1" @click="deleteVideo(item.videoName,item.videoId)"></span></p>
 			</view>
 		</view>
 		
@@ -32,6 +32,21 @@
 			<view class="button_create" v-if="select==0">课程创建者：{{course.courseTeacher}}</view>
 		</view>
 		
+		
+		<view class="videoInfo_bg" v-if="videoInfo==true">
+			<view class="videoInfo">
+				<p class="live_title">直播推流地址</p>
+				<p class="live_cont">{{pushAddress}}</p>
+				<p class="live_title">直播推流秘钥</p>
+				<p class="live_cont">{{pushKey}}</p>
+				<p class="live_title">直播开始时间</p>
+				<p class="live_cont">{{startTime}}</p>
+				<view class="live_Bt">
+					<view class="button" @click="liveover">结束直播</view>
+					<view class="button" @click="back">返 回</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -46,16 +61,28 @@
 				teacher:0,//用户身份
 				select:0,//是否选课
 				Edit:0,//是否编辑
-				courseId:""//课程ID
+				courseId:"",//课程ID
+				videoID:"",
+				LivevideoID:"",
+				pushAddress:"",
+				pushKey:"",
+				startTime:"",
+				videoInfo:false
 			}
 		},
+		onHide() {
+			
+		},
+		onShow(e) {
+			
+		},
 		onLoad(e){
-			console.log(e);
+			console.log(e)
 			if(e.initialTime){
 				this.initialTime=e.initialTime;
 			}
 			this.courseId=e.courseID;
-		
+			
 			let _this=this;
 			_this.$requestData({
 				url:'/course/getCourseById',
@@ -82,6 +109,7 @@
 				console.log(res)
 				if(res.data.code === 200){
 					_this.src=res.data.data.videoAddress;
+					_this.videoID=res.data.data.videoId;
 				}
 			});
 			
@@ -111,17 +139,35 @@
 				})
 			},
 			ToVideo(courseID,videoID){
-				if(this.Edit==0){
-					uni.redirectTo({
-						url: 'CourseDetails?courseID='+courseID+'&videoID='+videoID+'&initialTime=0',
-					});
-				}
+				let _this=this;
+				_this.$requestData({
+					url:'/lesson/get',
+					data:{
+						videoId:videoID,
+						courseId:courseID
+					}
+				}).then((res) => {
+					console.log(res)
+					if(res.data.code === 200&&(res.data.data.playBack==0||res.data.data.playBack==1)){
+						_this.videoInfo=true;
+						_this.pushAddress=res.data.data.pushAddress;
+						_this.pushKey=res.data.data.pushKey;
+						_this.startTime=res.data.data.startTime;
+						_this.LivevideoID=res.data.data.videoId;
+					}else{
+						if(this.Edit==0){
+							uni.redirectTo({
+								url: 'CourseDetails?courseID='+courseID+'&videoID='+videoID+'&initialTime=0',
+							});
+						}
+					}
+				});
 			},
 			edit(){
 				this.Edit=1;
 			},
 			addVideo(val){
-				uni.navigateTo({
+				uni.redirectTo({
 					url: 'uploadVideo?courseId='+val,
 				})
 			},
@@ -129,19 +175,19 @@
 				this.Edit=0;
 			},
 			deleteVideo(name,val){
-				this.$requestData({
-					url:'/lesson/delete',
-					data:{
-						videoId:val
-					}
-				}).then((res) => {
-					console.log(res)
-					if(res.data.code === 0){
-						uni.showModal({
-							title: '提示',
-							content: '是否删除课程：'+name+'？',
-							success: res => {
-								if (res.confirm) {
+				uni.showModal({
+					title: '提示',
+					content: '是否删除章节：'+name+'？',
+					success: res => {
+						if (res.confirm) {
+							this.$requestData({
+								url:'/lesson/delete',
+								data:{
+									videoId:val
+								}
+							}).then((res) => {
+								console.log(res)
+								if(res.data.code === 0){
 									uni.showToast({
 										title:"删除成功！"
 									});
@@ -156,8 +202,8 @@
 										}
 									});
 								}
-							}
-						});
+							});
+						}
 					}
 				});
 			},
@@ -188,6 +234,36 @@
 						});
 					}
 				});
+			},
+			liveover(){
+				this.$requestData({
+					url:'/live/pushend',
+					data:{
+						videoId:this.LivevideoID
+					}
+				}).then((res) => {
+					if(res.data.code === 200){
+						uni.showToast({
+							title:"直播已结束，自动为您生成回放课程！",
+							icon:"none"
+						});
+						this.videoInfo=false;
+					}
+				});
+			},
+			back(){
+				this.videoInfo=false;
+			},
+			timeupdate(res){
+				let time=res.detail.currentTime.toFixed(0);
+				this.$requestData({
+					url:'/ca/saveInfo',
+					data:{
+						courseId:this.courseId,
+						videoId:this.videoID,
+						videoProgress:time
+					}
+				})
 			}
 		}
 	}
@@ -304,5 +380,47 @@
 		color:#FF0033;
 		margin-top:10rpx ;
 		right: 80rpx;
+	}
+	.play{
+		color:#57e!important;
+	}
+	.videoInfo_bg{
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+		top: 0;
+		left: 0;
+		background-color: rgba(0,0,0,0.3);
+	}
+	.videoInfo{
+		background-color: #fff;
+		position: fixed;
+		border-radius: 50rpx;
+		z-index: 2;
+		top: 480rpx;
+		width: 645rpx;
+		left: 52.5rpx;
+		height: 400rpx;
+		height: auto;
+	}
+	.live_title{
+		width: 600rpx;
+		text-align: center;
+		font-size:18px;
+		font-weight: bold;
+		margin: 30rpx auto;
+	}
+	.live_cont{
+		width: 560rpx;
+		word-break:break-all;
+		font-size:16px;
+		margin: 30rpx auto;
+		height: auto;
+		line-height: 44rpx;
+	}
+	.live_Bt{
+		text-align: center;
+		margin-bottom: 15px;
 	}
 </style>

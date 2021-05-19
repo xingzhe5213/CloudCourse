@@ -19,7 +19,8 @@ export const requestData=(options)=>{ //传入的options是一个json对象
 			},
 			fail: (err) => {
 				uni.showToast({
-					title:"系统异常！"
+					title:"系统异常！",
+					icon:"none"
 				})
 				reject(err)
 			}

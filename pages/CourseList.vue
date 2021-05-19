@@ -16,7 +16,7 @@
 		<p class="courseNone" v-if="courseData.length==0">未找到相关课程</p>
 		<view v-if="courseData.length>0">
 			<p class="courseTitle" v-if="search==0">{{title||'课程'}}</p>
-			<CourseData :DataList='courseData'></CourseData>
+			<CourseData :DataList='courseData' edit="0"></CourseData>
 			<view class="courMore" v-if="CouCount!=Couindex" @click="getCou(Couindex+5)">加载更多</view>
 		</view>
 	</view>
